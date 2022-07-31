@@ -16,8 +16,9 @@ class CreatePenilaiansTable extends Migration
         Schema::create('penilaians', function (Blueprint $table) {
             $table->id();
             $table->integer('users_id');
-            $table->integer('pengaduans_id');
-            $table->integer('rating');
+            $table->integer('pengaduan_id');
+            $table->string('komentar');
+            $table->string('rating');
             $table->timestamps();
         });
     }

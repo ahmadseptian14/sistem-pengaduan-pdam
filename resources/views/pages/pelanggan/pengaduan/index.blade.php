@@ -14,6 +14,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
+                            <a href="{{ route('pengaduan.create') }}" class="btn btn-primary mb-3">Input Pengaduan</a>
                             <div>
                                 <table
                                     class="table table-hover scroll-horizontal-vertical w-100 table-bordered table-striped"
@@ -22,8 +23,9 @@
                                         <tr>
                                             <th>Nama</th>
                                             <th>Tanggal</th>
+                                            <th>Foto</th>
                                             <th>Status</th>
-                                            {{-- <th>Rating</th> --}}
+                                            <th>Rating</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -31,9 +33,12 @@
                                         @forelse ($pengaduans as $pengaduan)
                                             <tr>
                                                 <td>{{ $pengaduan->nama }}</td>
-                                                <td>{{ $pengaduan->created_at->format('l, d F Y - H:i:s') }}</td>
-                                                <td>{{ $pengaduan->status}}</td>
-                                                {{-- <td>{{ $pengaduan->penilaian->rating}}</td> --}}
+                                                <td>{{ $pengaduan->created_at->format('d F Y - H:i:s') }}</td>
+                                                <td> 
+                                                    <img src="{{ Storage::url($pengaduan->foto) }}"  width="50" height="50" class="rounded-square">
+                                                </td>
+                                                <td>{{$pengaduan->status}}</td>
+                                                <td>{{$pengaduan->penilaian->rating}}</td> 
                                                 <td>
                                                     <div class="btn-group">
                                                         <div class="dropdown">
@@ -42,7 +47,7 @@
                                                                 Lihat
                                                             </button>
                                                             <div class="dropdown-menu">
-                                                                <a href="{{ route('pengaduan.show', $pengaduan->id) }}"
+                                                                <a href="{{ route('pengaduan.detail', $pengaduan->id) }}"
                                                                     class="dropdown-item">
                                                                     Lihat
                                                                 </a>

@@ -31,12 +31,6 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>NIK</label>
-                                        <input type="text" name="nik" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
                                         <label>No.Telepon</label>
                                         <input type="text" name="phone" class="form-control" required>
                                     </div>
@@ -64,7 +58,8 @@
                                         <label>Role</label>
                                         <select name="roles" id="roles" class="form-control select2" multiple="multiple">                   
                                             <option value="ADMIN">ADMIN</option>
-                                            <option value="PENGELOLA">PENGELOLA</option>
+                                            <option value="TEKNISI">TEKNISI</option>
+                                            <option value="PIMPINAN">PIMPINAN</option>
                                         </select>
                                     </div>
                                 </div>

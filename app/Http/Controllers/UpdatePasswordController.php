@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pengaduan;
-use App\Models\Tanggapan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
 
 
-class TanggapanController extends Controller
+class UpdatePasswordController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +27,7 @@ class TanggapanController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -40,24 +38,7 @@ class TanggapanController extends Controller
      */
     public function store(Request $request)
     {
-        DB::table('pengaduans')->where('id', $request->pengaduan_id)->update([
-            'status' => $request->status
-        ]);
-
-        $petugas_id = Auth::user()->id;
-
-        $data = $request->all();
-
-        $data['pengaduan_id'] = $request->pengaduan_id;
-        $data['petugas_id'] = $petugas_id;
-        $data['foto_tanggapan'] =  $request->file('foto_tanggapan')->store('assets/pengaduan', 'public');
-
-
-        Alert::success('Berhasil', 'Pengaduan berhasil ditanggapi');
-        Tanggapan::create($data);
-        return redirect()->route('pengaduan.index');
-
-
+        //
     }
 
     /**
@@ -68,11 +49,7 @@ class TanggapanController extends Controller
      */
     public function show($id)
     {
-        $pengaduan = Pengaduan::with(['details', 'user'])->findOrFail($id);
-
-        return view('pages.admin.tanggapan.add', [
-            'pengaduan' => $pengaduan
-        ]);
+        //
     }
 
     /**
@@ -81,9 +58,9 @@ class TanggapanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+        return view('pages.pelanggan.akun.edit');
     }
 
     /**
@@ -93,9 +70,22 @@ class TanggapanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'current_password' => ['required'],
+            'password' => ['required', 'min:8', 'confirmed'],
+        ]);
+
+        if (Hash::check($request->current_password, auth()->user()->password)) {
+            auth()->user()->update(['password' => Hash::make($request->password)]);
+            Alert::success('Berhasil', 'Password Berhasil di Update');
+            return redirect()->route('dashboard.index');
+        }   
+
+        throw ValidationException::withMessages([
+            'current_password' => 'Password saat ini yang anda masukan salah'
+        ]);
     }
 
     /**

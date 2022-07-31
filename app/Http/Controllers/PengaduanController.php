@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengaduan;
+use App\Models\Penilaian;
 use App\Models\Tanggapan;
 // use Barryvdh\DomPDF\PDF;
 use PDF;
@@ -20,7 +21,9 @@ class PengaduanController extends Controller
      */
     public function index()
     {   
-        $pengaduans = Pengaduan::orderBy('created_at', 'desc')->get();
+        $pengaduans = Pengaduan::with(['penilaian'])
+                                ->orderBy('created_at', 'desc')
+                                ->get();
 
         return view('pages.admin.pengaduan.index', [
             'pengaduans' => $pengaduans
@@ -32,9 +35,14 @@ class PengaduanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+   
+
+
     public function create()
     {
-        
+        return view('pages.pelanggan.pengaduan.create');
     }
 
     /**
@@ -46,23 +54,22 @@ class PengaduanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'description' => 'required'
+            'deskripsi' => 'required'
         ]);
 
-        $nik = Auth::user()->nik;
-        $id = Auth::user()->id;
-        $name = Auth::user()->name;
+        $users_id= Auth::user()->id;
+        $nama = Auth::user()->name;
 
         $data = $request->all();
-        $data['user_nik']= $nik;
-        $data['user_id'] = $id;
-        $data['name'] = $name;
+        $data['users_id'] = $users_id;
+        $data['nama'] = $nama;
+        $data['foto'] =  $request->file('foto')->store('assets/pengaduan', 'public');
 
         Alert::success('Berhasil', 'Pengaduan terkirim');
 
         Pengaduan::create($data);
 
-        return redirect()->route('home');
+        return redirect()->route('pengaduan.pelanggan');
 
     }
 
@@ -80,9 +87,12 @@ class PengaduanController extends Controller
 
         $tanggapan = Tanggapan::where('pengaduan_id',$id)->first();
 
+        $penilaian = Penilaian::where('pengaduan_id', $id)->first();
+
         return view('pages.admin.pengaduan.detail',[
         'pengaduans' => $pengaduans,
-        'tanggapan' => $tanggapan
+        'tanggapan' => $tanggapan,
+        'penilaian' => $penilaian
         ]);
     }
 
@@ -137,15 +147,42 @@ class PengaduanController extends Controller
             return $pdf->download('laporan-semua-pengaduan.pdf');
 
         }
-
-       
-       
     }
 
 
-    
-    
+    // Pelanggan
+    public function pengaduan_pelanggan()
+    {   
+        // $pengaduans = Pengaduan::orderBy('created_at', 'desc')->get();
+        $pengaduans = Pengaduan::with(['penilaian'])
+                                ->where('users_id',Auth::user()->id)
+                                ->orderBy('created_at', 'DESC')
+                                ->get();
+        // $pengaduans = Auth::user()->pengaduan()->penilaian()->orderBy('created_at', 'DESC')->get();
 
+        // $penilaian = Penilaian::where('pengaduan_id',$id)->first();
+
+
+        return view('pages.pelanggan.pengaduan.index', [
+            'pengaduans' => $pengaduans,
+            // 'penilaian' => $penilaian
+        ]);
+    }
+
+
+    public function detail_pengaduan($id)
+    {
+        $pengaduans = Pengaduan::with([
+            'details', 'user' 
+        ])->findOrFail($id);
+
+        $tanggapan = Tanggapan::where('pengaduan_id',$id)->first();
+
+        return view('pages.pelanggan.pengaduan.detail',[
+        'pengaduans' => $pengaduans,
+        'tanggapan' => $tanggapan
+        ]);
+    }
 
 
 }

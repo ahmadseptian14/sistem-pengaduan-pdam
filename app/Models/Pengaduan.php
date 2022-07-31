@@ -24,6 +24,10 @@ class Pengaduan extends Model
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
+    public function penilaian() {
+        return $this->hasOne(Penilaian::class, 'pengaduan_id', 'id');
+    }
+
     public function details() {
         return $this->hasMany(Pengaduan::class, 'id', 'id');
     }
@@ -39,6 +43,10 @@ class Pengaduan extends Model
     public function tanggapan() {
     return $this->hasOne(Tanggapan::class);
     }
+
+    // public function penilaians() {
+    //     return $this->hasMany(Penilaian::class, 'pengaduan_id', 'id');
+    // }
 
     public function status() {
     return $this->belongsTo(Tanggapan::class, 'status_id','status');

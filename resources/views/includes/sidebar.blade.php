@@ -4,43 +4,66 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- Nav Item - Dashboard -->
+    @if (Auth::user()->roles == 'PELANGGAN')
     <li class="nav-item active">
+        <a class="nav-link" href="{{route('pengaduan.pelanggan')}}">
+            <i class="fas fa-fw fa-list"></i>
+            <span>Lihat Data Pengaduan</span></a>
+    </li>
+    @endif
+
+    {{-- <li class="nav-item active">
         <a class="nav-link" href="{{route('dashboard.index')}}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
-    </li>
+    </li> --}}
+ 
 
+    @if (Auth::user()->roles == 'ADMIN')
     <li class="nav-item active">
         <a class="nav-link" href="{{route('pengaduan.index')}}">
             <i class="fas fa-fw fa-list"></i>
-            <span>Pengaduan</span></a>
+            <span>Lihat Data Pengaduan</span></a>
     </li>
+    @endif
 
+    @if (Auth::user()->roles == 'TEKNISI')
     <li class="nav-item active">
-        <a class="nav-link" href="{{route('cetak.form')}}">
+        <a class="nav-link" href="{{route('pengaduan.index')}}">
             <i class="fas fa-fw fa-list"></i>
-            <span>Export Laporan Pengaduan</span></a>
+            <span>Lihat Data Pengaduan</span></a>
     </li>
-
-    <li class="nav-item active">
-        <a class="nav-link" href="{{route('penilaian.index')}}">
-            <i class="fas fa-fw fa-list"></i>
-            <span>Penilaian</span></a>
-    </li>
-
-
+    @endif
+  
+    @if (Auth::user()->roles == 'ADMIN')
     <li class="nav-item active">
         <a class="nav-link" href="{{route('petugas.index')}}">
             <i class="fas fa-fw fa-user"></i>
-            <span>Petugas</span></a>
+            <span>Data Jabatan</span></a>
     </li>
+    @endif
 
+    @if (Auth::user()->roles == 'ADMIN')
     <li class="nav-item active">
-        <a class="nav-link" href="{{route('customer.index')}}">
+        <a class="nav-link" href="{{route('grafik.index')}}">
             <i class="fas fa-fw fa-user"></i>
-            <span>Customer</span></a>
+            <span>Lihat Grafik Penilaian</span></a>
     </li>
+    @endif
+
+    @if (Auth::user()->roles == 'PIMPINAN') 
+    <li class="nav-item active">
+        <a class="nav-link" href="{{route('grafik.index')}}">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Lihat Grafik Penilaian</span></a>
+    </li>
+    @endif
+  
+    
+   
+
+    
+   
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

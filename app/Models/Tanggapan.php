@@ -10,7 +10,7 @@ class Tanggapan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'pengaduan_id', 'tanggapan', 'petugas_id',
+        'id', 'pengaduan_id', 'tanggapan', 'petugas_id', 'foto_tanggapan'
     ];
 
     protected $hidden = [
@@ -25,7 +25,7 @@ class Tanggapan extends Model
 
     public function proses()
     {
-    return $this->hasMany(Pengaduan::class, 'status_id','status');
+        return $this->hasMany(Pengaduan::class, 'status_id','status');
     }
     
     public function country() {

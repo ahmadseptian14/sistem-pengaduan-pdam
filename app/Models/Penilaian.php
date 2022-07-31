@@ -12,7 +12,7 @@ class Penilaian extends Model
 
 
     protected $fillable = [
-        'description',  'users_id'
+         'users_id', 'pengaduan_id', 'rating', 'komentar'
     ];
 
     protected $hidden = [
@@ -22,4 +22,16 @@ class Penilaian extends Model
     public function user() {
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
+
+        public function pengaduan()
+        {
+            return $this->belongsTo(Pengaduan::class,'pengaduan_id', 'id');
+        }
+
+
+    // public function pengaduans()
+    // {
+    //     return $this->hasMany(Pengaduan::class, 'pengaduan_id', 'id');
+    // }
+
 }

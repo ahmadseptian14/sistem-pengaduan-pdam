@@ -21,8 +21,27 @@ class IsAdmin
 
 
         if (Auth::user() && Auth::user()->roles == 'ADMIN') {
+            
+            return $next($request);
+
+        } 
+        else if( Auth::user() && Auth::user()->roles == 'TEKNISI') {
+        
             return $next($request);
         }
+        else if( Auth::user() && Auth::user()->roles == 'PIMPINAN') {
+        
+            return $next($request);
+
+        } 
+
+        // else if( Auth::user() && Auth::user()->roles == 'PELANGGAN') {
+        
+        //     return $next($request);
+
+        // } 
+        
+        
         
         return redirect('/');
         

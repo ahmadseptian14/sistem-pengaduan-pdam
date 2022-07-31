@@ -1,13 +1,14 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\TanggapanController;
+use App\Http\Controllers\UpdatePasswordController;
 use App\Models\Pengaduan;
+use App\Models\Penilaian;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,18 +24,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Halaman Utama
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Penilaian
-Route::get('/penilaian', [PenilaianController::class, 'create'])->name('penilaian.create');
-Route::post('/create-penilaian', [PenilaianController::class, 'store'])->name('penilaian.store');
 
 
-Route::middleware(['auth', 'user'])->group(function () {
+Route::middleware(['auth','pelanggan'])->group( function() {
+    Route::get('/', [PengaduanController::class, 'pengaduan_pelanggan'])->name('pengaduan.pelanggan');
+    Route::get('/input-pengaduan', [PengaduanController::class, 'create'])->name('pengaduan.create');
     Route::post('/input-pengaduan', [PengaduanController::class, 'store'])->name('pengaduan.store');
+    Route::get('/detail-pengaduan/{id}', [PengaduanController::class, 'detail_pengaduan'])->name('pengaduan.detail');
 
+
+    Route::get('/input-penilaian/{id}', [PenilaianController::class, 'create'])->name('penilaian.create');
+    Route::post('/input-penilaian', [PenilaianController::class, 'store'])->name('penilaian.store');
 });
 
+   
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
     // Dashboard
@@ -64,9 +70,15 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
     Route::delete('/customer-delete/{id}', [CustomerController::class, 'destroy'])->name('customer.destroy');
 
     //Penialain
-    Route::get('/penilaian', [PenilaianController::class, 'index'])->name('penilaian.index');
-    
+    // Route::get('/penilaian', [PenilaianController::class, 'index'])->name('penilaian.index');
+    Route::get('/grafik-penilaian', [PenilaianController::class, 'grafik'])->name('grafik.index');
+
+    // Ubah Password
+    Route::get('/password/edit', [UpdatePasswordController::class, 'edit'])->name('password.edit');
+    Route::put('/password/edit', [UpdatePasswordController::class, 'update']);
 });
+
+
 
 
 

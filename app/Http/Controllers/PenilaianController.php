@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pengaduan;
 use App\Models\Penilaian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,9 +30,13 @@ class PenilaianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return view('penilaian');
+        $pengaduan = Pengaduan::with(['details', 'user'])->findOrFail($id);
+
+        return view('pages.pelanggan.penilaian.create', [
+            'pengaduan' => $pengaduan
+        ]);
     }
 
     /**
@@ -42,21 +47,20 @@ class PenilaianController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'description' => 'required',
-        ]);
+        // DB::table('pengaduans')->where('id', $request->pengaduan_id)->update([
+        //     'status' => $request->status
+        // ]);
 
-        $id = Auth::user()->id;
-      
+        $users_id = Auth::user()->id;
 
         $data = $request->all();
-        $data['users_id']=$id;
 
-        Alert::success('Berhasil', 'Penilaian terkirim');
+        $data['pengaduan_id'] = $request->pengaduan_id;
+        $data['users_id'] = $users_id;
 
+        Alert::success('Berhasil', 'Penilaian berhasil diberikan');
         Penilaian::create($data);
-
-        return redirect()->route('penilaian.create');
+        return redirect()->route('pengaduan.index');
     }
 
     /**
@@ -103,4 +107,22 @@ class PenilaianController extends Controller
     {
         //
     }
+
+    public function grafik()
+    {
+        $sangatBaik = Penilaian::where('rating', 'Sangat Baik')->count();
+        $baik = Penilaian::where('rating', 'Baik')->count();
+        $cukup = Penilaian::where('rating', 'Cukup')->count();
+        $kurang = Penilaian::where('rating', 'Kurang')->count();
+
+        return view('pages.pelanggan.penilaian.grafik', [
+            'sangatBaik' => $sangatBaik,
+            'baik' => $baik,
+            'cukup' => $cukup,
+            'kurang' => $kurang
+        ]);
+
+
+    }
+
 }

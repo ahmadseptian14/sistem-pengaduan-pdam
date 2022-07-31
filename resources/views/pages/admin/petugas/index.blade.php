@@ -4,9 +4,9 @@
 <div class="section-content section-dashboard-home" data-aos="fade-up">
     <div class="container-fluid">
         <div class="dashboard-heading">
-            <h2 class="dashboard-title">Petugas</h2>
+            <h2 class="dashboard-title">Jabatan</h2>
             <p class="dashboard-subtitle">
-                Daftar Petugas
+                Daftar Jabatan
             </p>
         </div>
         <div class="dashboard-content">
@@ -23,7 +23,6 @@
                                     <thead>
                                         <tr>
                                             <th>Nama</th>
-                                            <th>NIK</th>
                                             <th>No.Telepon</th>
                                             <th>Email</th>
                                             <th>Role</th>
@@ -33,7 +32,6 @@
                                         @forelse ($petugass as $petugas)
                                             <tr>
                                                 <td>{{$petugas->name}}</td>
-                                                <td>{{$petugas->nik}}</td>
                                                 <td>{{$petugas->phone}}</td>
                                                 <td>{{$petugas->email}}</td>
                                                 <td>{{$petugas->roles}}</td>

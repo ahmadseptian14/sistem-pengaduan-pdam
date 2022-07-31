@@ -18,7 +18,7 @@ class PetugasController extends Controller
      */
     public function index()
     {
-        $petugass = DB::table('users')->where('roles', '=', 'ADMIN')->get();
+        $petugass = DB::table('users')->whereIn('roles',['ADMIN','TEKNISI', 'PIMPINAN'])->get();
 
         return view('pages.admin.petugas.index', [
             'petugass' => $petugass
@@ -44,7 +44,7 @@ class PetugasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nik' => 'required|string|max:16|unique:users',
+            // 'nik' => 'required|string|max:16|unique:users',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'phone' => 'required|string|max:15',
@@ -55,7 +55,7 @@ class PetugasController extends Controller
             $user = $request->all();
     
             $user = User::create([
-            'nik' => $request->nik,
+            // 'nik' => $request->nik,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
