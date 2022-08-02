@@ -1,6 +1,6 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-    <img src="{{asset('/assets/img/logo-telkom.png')}}" alt="">
+    <img src="{{asset('/assets/img/LOGO-PDAM.png')}}" alt="">
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
